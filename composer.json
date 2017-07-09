@@ -1,0 +1,29 @@
+{
+    "name": "sasaya/unit-test",
+    "authors": [
+        {
+            "name": "Sasaya",
+            "email": "storyn26383@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/http": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sasaya\\LaravelSwoole\\": "src"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1",
+        "mockery/mockery": "^0.9.9",
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/php-code-coverage": "^5.2",
+        "satooshi/php-coveralls": "dev-master"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    }
+}
