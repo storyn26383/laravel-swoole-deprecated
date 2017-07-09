@@ -7,6 +7,7 @@
         }
     ],
     "require": {
+        "ext-swoole": "*",
         "illuminate/http": "^5.4"
     },
     "autoload": {

@@ -8,6 +8,7 @@ before_script:
   - travis_retry composer self-update
 
 install:
+  - travis_retry pecl install -f swoole
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
 
 script:
