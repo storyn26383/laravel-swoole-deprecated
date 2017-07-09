@@ -18,7 +18,9 @@ class Request
 
     public function uri()
     {
-        $uri = $this->header['origin'] . $this->server['request_uri'];
+        $uri = 'http' . (preg_match('/on|1/i', $this->server['https'] ?? '') ? 's' : '') . '://';
+
+        $uri .= rtrim($this->header['host'] . $this->server['request_uri'], '/');
 
         if (array_key_exists('query_string', $this->server)) {
             $uri .= "?{$this->server['query_string']}";

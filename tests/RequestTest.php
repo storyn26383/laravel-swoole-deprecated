@@ -56,7 +56,7 @@ class RequestTest extends TestCase
     {
         $mock = m::mock(\Swoole\Http\Request::class);
 
-        $mock->header = ['origin' => 'http://foo.bar.com'];
+        $mock->header = ['host' => 'foo.bar.com'];
         $mock->server = ['request_uri' => '/foo/bar'];
 
         $request = new Request($mock);
@@ -68,12 +68,42 @@ class RequestTest extends TestCase
     {
         $mock = m::mock(\Swoole\Http\Request::class);
 
-        $mock->header = ['origin' => 'http://foo.bar.com'];
+        $mock->header = ['host' => 'foo.bar.com'];
         $mock->server = ['query_string' => 'foo=bar', 'request_uri' => '/foo/bar'];
 
         $request = new Request($mock);
 
         $this->assertEquals('http://foo.bar.com/foo/bar?foo=bar', $request->uri());
+    }
+
+    public function testUriWithoutRequestUri()
+    {
+        $mock = m::mock(\Swoole\Http\Request::class);
+
+        $mock->header = ['host' => 'foo.bar.com'];
+        $mock->server = ['request_uri' => '/'];
+
+        $request = new Request($mock);
+
+        $this->assertEquals('http://foo.bar.com', $request->uri());
+    }
+
+    public function testHttps()
+    {
+        $mock = m::mock(\Swoole\Http\Request::class);
+
+        $mock->header = ['host' => 'foo.bar.com'];
+        $mock->server = ['request_uri' => '/', 'https' => 'on'];
+
+        $request = new Request($mock);
+
+        $this->assertEquals('https://foo.bar.com', $request->uri());
+
+        $mock->server['https'] = '1';
+
+        $request = new Request($mock);
+
+        $this->assertEquals('https://foo.bar.com', $request->uri());
     }
 
     public function testMethod()
@@ -197,8 +227,12 @@ class RequestTest extends TestCase
 
         $mock->get = ['foo' => 'foo'];
         $mock->post = ['bar' => 'bar'];
-        $mock->header = ['origin' => 'http://foo.bar.com'];
-        $mock->server = ['query_string' => 'foo=foo', 'request_method' => 'POST', 'request_uri' => '/'];
+        $mock->header = ['host' => 'foo.bar.com'];
+        $mock->server = [
+            'query_string' => 'foo=foo',
+            'request_method' => 'POST',
+            'request_uri' => '/',
+        ];
         $mock->cookie = ['cookie' => 'cookie'];
         $mock->files = ['file' => [
             'name' => 'testing',
@@ -219,7 +253,7 @@ class RequestTest extends TestCase
         $this->assertEquals('foo', $request->input('foo'));
         $this->assertEquals('bar', $request->input('bar'));
         $this->assertArrayHasKey('file', $request->file());
-        $this->assertContains('http://foo.bar.com', $request->headers->get('origin'));
+        $this->assertContains('foo.bar.com', $request->headers->get('host'));
         $this->assertContains('cookie', $request->cookies->get('cookie'));
     }
 }
