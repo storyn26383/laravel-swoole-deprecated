@@ -1,4 +1,4 @@
-# Laravel Swoole
+# Laravel Swoole (DEPRECATED)
 
 [![Build Status](https://travis-ci.org/storyn26383/laravel-swoole.svg?branch=master)](https://travis-ci.org/storyn26383/laravel-swoole)
 [![Coverage Status](https://coveralls.io/repos/github/storyn26383/laravel-swoole/badge.svg?branch=master)](https://coveralls.io/github/storyn26383/laravel-swoole?branch=master)
